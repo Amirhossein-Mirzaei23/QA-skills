@@ -123,13 +123,16 @@ node_json_merge() { # node_json_merge <dest> <js-body(cfg,cmd,args)> <label>
   QA_CMD="$MCP_COMMAND" QA_ARGS="$MCP_ARGS_JSON" node -e '
     const fs = require("fs");
     const dest = process.argv[1], stage = process.argv[2], js = process.argv[3];
+    let raw = "";
+    try { raw = fs.readFileSync(dest, "utf8"); } catch (e) { if (e.code !== "ENOENT") { console.error("read error: " + e.message); process.exit(3); } }
     let cfg = {};
-    try { cfg = JSON.parse(fs.readFileSync(dest, "utf8")); }
-    catch (e) { if (e.code !== "ENOENT") { console.error("parse error: " + e.message); process.exit(3); } }
+    try { cfg = JSON.parse(raw); }
+    catch (e) { if (raw.trim() !== "") { console.error("parse error: " + e.message); process.exit(3); } }
+    const indent = /^[ \t]*\t/m.test(raw) ? "\t" : "  ";
     const cmd = process.env.QA_CMD;
     const args = JSON.parse(process.env.QA_ARGS);
     new Function("cfg", "cmd", "args", js)(cfg, cmd, args);
-    fs.writeFileSync(stage, JSON.stringify(cfg, null, 2) + "\n");
+    fs.writeFileSync(stage, JSON.stringify(cfg, null, indent) + "\n");
   ' "$_dest" "$_stage" "$_js" || { rm -f "$_stage"; die "JSON merge failed for $_dest (file left untouched)"; }
   commit_file "$_stage" "$_dest" "$_label"
 }
@@ -288,6 +291,17 @@ mcp_hermes() {
   commit_file "$_stage" "$f" hermes
 }
 
+mcp_omp() {
+  log '  [omp]'
+  f="$HOME/.omp/agent/mcp.json"
+  if node_json_check "$f" mcpServers.playwright; then
+    log '    = already up to date'
+    return 0
+  fi
+  record "mcp omp $f"
+  node_json_merge "$f" 'cfg.mcpServers = cfg.mcpServers || {}; cfg.mcpServers.playwright = { type: "stdio", command: cmd, args: args };' omp
+}
+
 mcp_omp_project() {
   f="$PWD/.mcp.json"
   log "  [omp project scope] $f"
@@ -355,7 +369,7 @@ uninstall_all() {
   while read -r kind agent p; do
     [ "$kind" = mcp ] || continue
     case $agent in
-      claude|omp-project)
+      claude|omp|omp-project)
         if node_json_check "$p" mcpServers.playwright 2>/dev/null || [ -f "$p" ]; then
           if [ "$DRY" = 1 ]; then log "  ~ would remove playwright from $p"
           else
@@ -507,7 +521,7 @@ for a in $TARGETS; do
       zcode) mcp_zcode ;;
       codex) mcp_codex ;;
       hermes) mcp_hermes ;;
-      omp) : ;; # omp MCP is handled by --project (see README) or the shared hermes entry
+      omp) mcp_omp ;;
     esac
   fi
   [ "$DO_SKILLS" = 1 ] && install_skills_for "$a"
@@ -524,4 +538,5 @@ log "Done.$([ "$DRY" = 1 ] && echo ' (dry run — nothing was written)')"
 log 'Restart your agents, then verify:'
 log '  claude mcp list          -> playwright'
 log '  zcode: Settings -> MCP   -> playwright connected'
-log '  codex/hermes/omp: start a session and ask for playwright browser tools'
+log '  omp: new session shows mcp__playwright__* tools'
+log '  codex/hermes: start a session and ask for playwright browser tools'
