@@ -471,7 +471,7 @@ TARGETS=${TARGETS# }
 log "QA-skills installer"
 log "  agents :$TARGETS"
 log "  mcp    : npx $MCP_PACKAGE $(os_is_windows && echo '(via cmd /c)')"
-log "  skills : $(printf '%s\n' $SKILL_NAMES | wc -l) qa-playwright* skills"
+log "  skills : $(echo "$SKILL_NAMES" | wc -w) qa-playwright* skills"
 log ""
 
 if [ "$ASSUME_YES" = 0 ]; then
