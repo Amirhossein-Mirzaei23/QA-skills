@@ -20,7 +20,7 @@
 # =============================================================================
 set -u
 
-REPO_OWNER="CHANGE_ME"
+REPO_OWNER="Amirhossein-Mirzaei23"
 REPO_NAME="QA-skills"
 REPO_BRANCH="main"
 MCP_PACKAGE="@playwright/mcp@latest"
