@@ -24,7 +24,7 @@ REPO_OWNER="Amirhossein-Mirzaei23"
 REPO_NAME="QA-skills"
 REPO_BRANCH="main"
 MCP_PACKAGE="@playwright/mcp@latest"
-SKILL_NAMES='qa-playwright qa-playwright-core qa-playwright-branch-features qa-playwright-forms-auth qa-playwright-i18n-rtl qa-playwright-responsive qa-playwright-ssr-seo'
+SKILL_NAMES='qa-playwright qa-playwright-core qa-playwright-branch-features qa-playwright-forms-auth qa-playwright-i18n-rtl qa-playwright-responsive qa-playwright-ssr-seo qa-browser-boundary'
 ALL_AGENTS='omp hermes claude codex zcode'
 STATE_DIR="${QA_SKILLS_INSTALL_DIR:-$HOME/.qa-skills-installer}"
 MANIFEST="$STATE_DIR/manifest"
@@ -327,6 +327,8 @@ skills_dest() {
 install_skills_for() {
   _a=$1
   _root=$(skills_dest "$_a")
+  _total=0
+  for _t in $SKILL_NAMES; do _total=$((_total + 1)); done
   log "  [skills] -> $_root"
   _same=0; _chg=0
   for s in $SKILL_NAMES; do
@@ -350,7 +352,7 @@ install_skills_for() {
     record "skill $dst"
     _chg=$((_chg + 1))
   done
-  log "    $_same/7 already identical, $_chg changed"
+  log "    $_same/$_total already identical, $_chg changed"
 }
 
 # --- uninstall -----------------------------------------------------------------
@@ -468,7 +470,7 @@ fi
 
 # --- resolve target agents ---------------------------------------------------------
 if [ -n "$AGENTS" ]; then
-  OLDIFS=$IFS; IFS=','
+  OLDIFS=$IFS; IFS=', 	'
   for a in $AGENTS; do
     ok=0
     for b in $ALL_AGENTS; do [ "$a" = "$b" ] && ok=1; done
@@ -485,7 +487,7 @@ TARGETS=${TARGETS# }
 log "QA-skills installer"
 log "  agents :$TARGETS"
 log "  mcp    : npx $MCP_PACKAGE $(os_is_windows && echo '(via cmd /c)')"
-log "  skills : $(echo "$SKILL_NAMES" | wc -w) qa-playwright* skills"
+log "  skills : $(echo "$SKILL_NAMES" | wc -w) QA skills (7 qa-playwright* + qa-browser-boundary)"
 log ""
 
 if [ "$ASSUME_YES" = 0 ]; then

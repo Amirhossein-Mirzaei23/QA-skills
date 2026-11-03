@@ -1,6 +1,6 @@
 # QA-skills
 
-One-command installer that registers the **Playwright MCP server** and installs the seven **qa-playwright\* skills** — a complete browser-QA toolkit — into five AI coding agents:
+One-command installer that registers the **Playwright MCP server** and installs the eight **QA skills** — seven `qa-playwright\*` skills plus `qa-browser-boundary` for legacy-browser support — into five AI coding agents:
 
 | Agent | MCP config written | Skills written |
 |---|---|---|
@@ -58,7 +58,7 @@ That combination is exactly what browser QA needs: an agent that opens the app, 
 
 ## The skills and their use cases
 
-The seven skills form a hub-and-spoke toolkit. **`qa-playwright-core` defines the shared browser loop and evidence rules; the hub routes every task to the right sub-skill.** After install, just tell your agent "test this branch" or "QA the login flow" — the matching skill loads automatically.
+The seven Playwright skills form a hub-and-spoke toolkit. **`qa-playwright-core` defines the shared browser loop and evidence rules; the hub routes every task to the right sub-skill.** After install, just tell your agent "test this branch" or "QA the login flow" — the matching skill loads automatically.
 
 | Skill | Use it when |
 |---|---|
@@ -69,6 +69,7 @@ The seven skills form a hub-and-spoke toolkit. **`qa-playwright-core` defines th
 | `qa-playwright-ssr-seo` | Server-side rendering and SEO: crawler-visible HTML (via `curl`), `<title>` / meta description / `og:*` / canonical in page source, Nuxt payload embedding data, no flash of empty state, zero hydration warnings. |
 | `qa-playwright-i18n-rtl` | Multi-locale apps (fa / en / ar): RTL layout direction, flipped icons, truncated text, Persian digits, untranslated strings leaking through, plus dark/light theme checks on both. |
 | `qa-playwright-responsive` | Viewport matrix (375 / 768 / 1440), mobile emulation, horizontal overflow, tap-target sizes, hover-only affordances that break on touch, `inputmode` keyboards, Android WebView fallback behavior. |
+| `qa-browser-boundary` | Legacy-browser compatibility via the [browser-boundary](https://www.npmjs.com/package/browser-boundary) CLI: launches real historical Chromium (67+) and Firefox (52+) builds, verifies the oldest passing / first failing major, staged workflow (`quick` → exact majors → full boundary scan), readiness selectors, JSON/MD evidence reports. |
 
 ### Conventions every skill enforces
 
@@ -93,7 +94,8 @@ QA-skills/
     ├── qa-playwright-forms-auth/
     ├── qa-playwright-i18n-rtl/
     ├── qa-playwright-responsive/
-    └── qa-playwright-ssr-seo/
+    ├── qa-playwright-ssr-seo/
+    └── qa-browser-boundary/     # legacy-browser boundary scans (browser-boundary CLI)
 ```
 
 Each skill is a directory with one `SKILL.md` (YAML frontmatter: name, description, tags, related skills — plus the procedure body). The installer copies these directories verbatim into each agent's skills folder; there is no build step.

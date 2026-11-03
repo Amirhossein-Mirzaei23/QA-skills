@@ -7,7 +7,7 @@ license: proprietary
 metadata:
   hermes:
     tags: [qa, playwright, browser, testing]
-    related_skills: [qa-playwright-core, qa-playwright-branch-features, qa-playwright-ssr-seo, qa-playwright-forms-auth, qa-playwright-i18n-rtl, qa-playwright-responsive]
+    related_skills: [qa-playwright-core, qa-playwright-branch-features, qa-playwright-ssr-seo, qa-playwright-forms-auth, qa-playwright-i18n-rtl, qa-playwright-responsive, qa-browser-boundary]
 ---
 
 ## When to Use
@@ -28,6 +28,7 @@ load the sub-skill that matches the task:
 | `qa-playwright-forms-auth` | Forms, login/register/reset flows, captcha, validation errors. |
 | `qa-playwright-i18n-rtl` | Locale matrix (fa/en/ar), RTL layout, dark/light theme. |
 | `qa-playwright-responsive` | Viewport sizes, mobile emulation, touch, WebView-ish constraints. |
+| `qa-browser-boundary` | Legacy-browser support: find the oldest verified passing browser / first verified failing major with real historical builds (`browser-boundary` CLI). |
 
 ## How tools are loaded
 

@@ -7,7 +7,7 @@ license: proprietary
 metadata:
   hermes:
     tags: [qa, playwright, browser]
-    related_skills: [qa-playwright, qa-playwright-branch-features, qa-playwright-ssr-seo, qa-playwright-forms-auth, qa-playwright-i18n-rtl, qa-playwright-responsive]
+    related_skills: [qa-playwright, qa-playwright-branch-features, qa-playwright-ssr-seo, qa-playwright-forms-auth, qa-playwright-i18n-rtl, qa-playwright-responsive, qa-browser-boundary]
 ---
 
 ## When to Use
