@@ -3,7 +3,7 @@
 # QA-skills installer
 # Registers the Playwright MCP server and installs the qa-playwright* skills
 # for: omp, hermes, claude (Claude Code), codex, zcode.
-# Runs on Linux (bash/dash/WSL) and Windows (Git Bash / MSYS2).
+# Runs on Linux (bash/dash/WSL), macOS, and Windows (Git Bash / MSYS2).
 #
 # Usage:
 #   ./install.sh                       interactive confirm for detected agents

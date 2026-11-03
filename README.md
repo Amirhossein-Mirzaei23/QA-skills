@@ -14,7 +14,7 @@ One-command installer that registers the **Playwright MCP server** and installs 
 
 ## Quick install
 
-**Linux / WSL:**
+**Linux / macOS / WSL:**
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/Amirhossein-Mirzaei23/QA-skills/main/install.sh | sh -s -- --all
@@ -26,8 +26,9 @@ curl -fsSL https://raw.githubusercontent.com/Amirhossein-Mirzaei23/QA-skills/mai
 curl -fsSL https://raw.githubusercontent.com/Amirhossein-Mirzaei23/QA-skills/main/install.sh | sh -s -- --all
 ```
 
-Same script, same command for both platforms — it detects Windows and writes
-`cmd /c npx @playwright/mcp@latest` (the exec form Windows needs) instead of plain `npx`.
+Same script, same command for all platforms — it detects the OS: Windows gets
+`cmd /c npx @playwright/mcp@latest` (the exec form Windows needs), Linux and macOS
+get plain `npx @playwright/mcp@latest`.
 
 Prefer running from a clone:
 
@@ -104,7 +105,7 @@ Each skill is a directory with one `SKILL.md` (YAML frontmatter: name, descripti
 
 ## The installer, explained
 
-`install.sh` is a single POSIX sh script that runs on Linux (bash/dash/WSL) and Windows (Git Bash / MSYS2). What it actually does:
+`install.sh` is a single POSIX sh script that runs on Linux (bash/dash/WSL), macOS, and Windows (Git Bash / MSYS2). What it actually does:
 
 1. **Bootstrap** — when piped (`curl | sh`), the script detects it's not running inside a checkout, downloads the repo tarball from GitHub, and re-executes itself from the extracted copy. `curl` + `tar` are the only bootstrap requirements.
 2. **Detect agents** — for each of the five agents it checks for the config file/dir or CLI on PATH, and targets only the detected ones (override with `--agents`).
@@ -163,6 +164,12 @@ Removes exactly the skill directories and MCP entries recorded in `~/.qa-skills-
 - Use Git Bash (ships with Git for Windows). WSL counts as Linux and configures Linux-side agents only.
 - All five agents accept the `cmd /c npx …` launch shape the installer writes on Windows.
 - Configs live under `%USERPROFILE%` (`.codex`, `.zcode`, `.claude`, `.hermes`, `.omp`).
+
+## macOS notes
+
+- The same curl one-liner works unchanged — the script detects macOS and writes the plain `npx @playwright/mcp@latest` launch shape (no `cmd /c`).
+- The Playwright MCP server and all `qa-playwright*` skills work normally on macOS.
+- `qa-browser-boundary` historical scans are validated on Linux x64 only; macOS is best-effort upstream (see the [browser-boundary capability matrix](https://www.npmjs.com/package/browser-boundary)) — current-browser checks (`quick`, `--strategy latest`) work fine.
 
 ## License
 
