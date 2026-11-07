@@ -1,4 +1,4 @@
-# QA-skills
+#Test Pilot
 
 One-command installer that registers the **Playwright MCP server** and installs the eight **QA skills** — seven `qa-playwright\*` skills plus `qa-browser-boundary` for legacy-browser support — into five AI coding agents:
 
@@ -17,13 +17,13 @@ One-command installer that registers the **Playwright MCP server** and installs 
 **Linux / macOS / WSL:**
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Amirhossein-Mirzaei23/QA-skills/main/install.sh | sh -s -- --all
+curl -fsSL https://raw.githubusercontent.com/Amirhossein-Mirzaei23/test-pilot/main/install.sh | sh -s -- --all
 ```
 
 **Windows (Git Bash / MSYS2):**
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Amirhossein-Mirzaei23/QA-skills/main/install.sh | sh -s -- --all
+curl -fsSL https://raw.githubusercontent.com/Amirhossein-Mirzaei23/test-pilot/main/install.sh | sh -s -- --all
 ```
 
 Same script, same command for all platforms — it detects the OS: Windows gets
@@ -33,8 +33,8 @@ get plain `npx @playwright/mcp@latest`.
 Prefer running from a clone:
 
 ```sh
-git clone https://github.com/Amirhossein-Mirzaei23/QA-skills.git
-cd QA-skills
+git clone https://github.com/Amirhossein-Mirzaei23/test-pilot.git
+cd test-pilot
 ./install.sh --all
 ```
 
@@ -84,7 +84,7 @@ The seven Playwright skills form a hub-and-spoke toolkit. **`qa-playwright-core`
 ## Repo structure
 
 ```
-QA-skills/
+test-pilot/
 ├── install.sh                  # the whole installer (POSIX sh, ~540 lines)
 ├── mcp/
 │   └── playwright.json         # canonical MCP entry: npx @playwright/mcp@latest
